@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class BalanceAmount{
 
-    public void BalanceAmount(List<Account> accounts, int accountNumber, int amount, String actionMessage) {
+    public void updateAccountBalance(List<Account> accounts, int accountNumber, int amount, String actionMessage) {
         for (Account account : accounts) {
             if (account.number == accountNumber) {
                 account.updateBalance(amount);
