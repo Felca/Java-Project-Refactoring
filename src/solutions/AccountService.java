@@ -6,7 +6,7 @@ import java.util.List;
 public class AccountService {
     private List<Account> accounts = new ArrayList<>();
 
-    private boolean isAccountNumberUnique(int accountNumber) {
+    public boolean isAccountNumberUnique(int accountNumber) {
     	for(Account account : accounts){
             if(account.getNumber() == accountNumber)
             {
