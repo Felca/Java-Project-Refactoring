@@ -2,15 +2,23 @@ package solutions;
 
 import java.util.List;
 
-public class Validator {
+public class ValidatorHandler {
 	private static final int MIN_BALANCE_TO_OPEN = 1000;
 	private static final int MIN_BALANCE_REMAIN_AFTER_WITHDRAW = 1000;
 	
-	public boolean isAccountNumberUnique(int accountNumber, List<Account> accounts) {
-        for (Account account : accounts) {
-            if (account.getNumber() == accountNumber) {
-            	System.out.println("Account Number exists! Please use a different number.");
-            	return false;
+	private AccountService accountService;
+	
+    public ValidatorHandler(AccountService accountService) {
+        this.accountService = accountService;
+    }
+	
+	public boolean isAccountNumberUnique(int accountNumber) {
+		List<Account> accounts = accountService.getAccounts();
+    	for(Account account : accounts){
+            if(account.getNumber() == accountNumber)
+            {
+            	System.out.println("Account Number exists! Please use different number");
+                return false;
             }
         }
         return true;

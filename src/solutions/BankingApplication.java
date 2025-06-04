@@ -3,164 +3,83 @@ package solutions;
 import java.util.Scanner;
 
 public class BankingApplication {
-    private final AccountService accountService;
-    private final Validator validator;
-    private final Scanner scanner;
+	private AccountService accountService;
+    private Scanner scanner;
+
+    private CreateAccountHandler createAccHandler;
+    private UpdateAccountHandler updateAccHandler;
+    private DeleteAccountHandler delAccHandler;
+    private TransactionHandler transactionHandler;
+    private SearchHandler searchHandler;
+    private ValidatorHandler validation;
+    
+
+    public static final int MIN_BALANCE_TO_OPEN = 1000;
+    public static final int MIN_BALANCE_REMAIN_AFTER_WITHDRAW = 1000;
 
     public BankingApplication() {
         this.accountService = new AccountService();
-		this.validator = new Validator();
         this.scanner = new Scanner(System.in);
+        
+        this.createAccHandler = new CreateAccountHandler(accountService, validation, scanner);
+        this.updateAccHandler = new UpdateAccountHandler(accountService, scanner);
+        this.delAccHandler = new DeleteAccountHandler(accountService, scanner);
+        this.transactionHandler = new TransactionHandler(accountService, validation, scanner);
+        this.searchHandler = new SearchHandler(accountService, scanner);
+        this.validation = new ValidatorHandler(accountService);
+
+    }
+    
+    private void displayMenu() {
+    	System.out.println("\nAvailable Choices"
+		    			+ "\n1.Create a new Account"
+		    			+ "\n2.Display all accounts"
+		    			+ "\n3.Update an account"
+		    			+ "\n4.Delete an account"
+		    			+ "\n5.Deposit an amount into your account"
+		    			+ "\n6.Withdraw an amount from your account"
+		    			+ "\n7.Search for an account"
+		    			+ "\n8.Exit\n");
+        System.out.println("Enter your choice: ");
     }
 
     public void run() {
         int choice;
         do {
             displayMenu();
-            System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
             handleChoice(choice);
-        } while (choice != 8);
-    }
-
-    private void displayMenu() {
-        System.out.println("\nAvailable Choices:");
-        System.out.println("1. Create a new Account");
-        System.out.println("2. Display all Accounts");
-        System.out.println("3. Update Account Balance");
-        System.out.println("4. Delete Account");
-        System.out.println("5. Deposit Amount");
-        System.out.println("6. Withdraw Amount");
-        System.out.println("7. Search for Account");
-        System.out.println("8. Exit");
+        } while(choice != 8);
     }
 
     private void handleChoice(int choice) {
-    	
         switch (choice) {
-            case 1:                
-            	handleCreateAccount();
-                break;
-
+            case 1:
+            	createAccHandler.handle();
+            	break;
             case 2:
-            	handleDisplayAccounts();
-                break;
-
+            	accountService.displayAllAccounts();
+            	break;
             case 3:
-                handleUpdateBalance();
-                break;
-
+            	 updateAccHandler.handle();
+            	 break;
             case 4:
-                handleDeleteAccount();
-                break;
-
+            	delAccHandler.handle();
+            	break;
             case 5:
-            	handleDeposit();
-                break;
-
+            	transactionHandler.handleDeposit();
+            	break;
             case 6:
-            	handleWithdraw();
-                break;
-
+            	transactionHandler.handleWithdraw();
+            	break;
             case 7:
-                handleSearch();
-                break;
-
+            	searchHandler.handle();
+            	break;
             case 8:
-                System.out.println("Exit the application");
-                break;
-
+            	System.out.println("Exit the application");
+            	break;
             default:
-                System.out.println("Invalid choice!");
+            	System.out.println("Invalid choice!");
         }
-    }
-    
-    private void handleCreateAccount() {
-        System.out.println("Select account type\n1. Salary Account\n2. Savings Account\n3. Current Account\n");
-        int type = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter name: ");
-        String name = scanner.nextLine();
-        
-        int number;
-        boolean valid = false;
-        do {
-            System.out.print("Enter account number: ");
-            number = scanner.nextInt();
-            valid = validator.isAccountNumberUnique(number, accountService.getAccounts());
-        } while (!valid);
-
-        System.out.print("Enter creation date: ");
-        String creationDate = scanner.next();
-
-        int balance;
-        do {
-            System.out.print("Enter account balance: ");
-            balance = scanner.nextInt();
-            valid = validator.accountBalanceAccepted(balance);
-        } while (!valid);
-
-        accountService.createAccount(type, name, number, creationDate, balance);
-    }
-    
-    private void handleDisplayAccounts() {
-    	accountService.displayAllAccounts();
-    }
-    
-    private void handleUpdateBalance() {
-    	System.out.print("Enter account number: ");
-        int accountNumber = scanner.nextInt();
-        
-        Account acc = accountService.searchAccount(accountNumber);
-        if(acc == null) return;
-        
-        System.out.println("Enter amount to be updated: ");
-        int amount = scanner.nextInt();
-        
-        accountService.updateAccountBalance(acc, amount);
-    }
-    
-    private void handleDeleteAccount() {
-    	System.out.print("Enter account number to delete: ");
-        int accountNumber = scanner.nextInt();
-        accountService.deleteAccount(accountNumber);
-    }
-    
-    private void handleDeposit() {
-    	System.out.print("Enter account number to deposit: ");
-        int accountNumber = scanner.nextInt();
-        
-        Account acc = accountService.searchAccount(accountNumber);
-        if(acc == null) return;
-        
-        System.out.println("Enter amount to be deposited: ");
-        int amount = scanner.nextInt();
-        
-        accountService.depositAmount(acc, amount);
-    }
-    
-    private void handleWithdraw() {
-    	System.out.print("Enter account number to withdraw: ");
-        int accountNumber = scanner.nextInt();
-        
-        Account acc = accountService.searchAccount(accountNumber);
-        if(acc == null) return;
-        
-        int amount;
-    	boolean valid = false;
-    	do {
-    		System.out.println("Enter amount to be withdrawn: ");
-            amount = scanner.nextInt();
-            valid = validator.isPossibleWithdraw(acc, amount);
-        } while (!valid);
-        
-        accountService.withdrawAmount(acc, amount);
-    }
-    
-    private void handleSearch() {
-    	System.out.print("Enter account number to search: ");
-        int accountNumber = scanner.nextInt();
-        accountService.searchAccount(accountNumber);
     }
 }
