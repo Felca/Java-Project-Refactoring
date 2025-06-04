@@ -22,6 +22,7 @@ public class BankingApplication {
 
     public BankingApplication() {
         this.accountService = new AccountService();
+        this.validation = new ValidatorHandler(accountService);
         this.scanner = new Scanner(System.in);
         
         this.createAccHandler = new CreateAccountHandler(accountService, validation, scanner);
@@ -29,7 +30,6 @@ public class BankingApplication {
         this.delAccHandler = new DeleteAccountHandler(accountService, scanner);
         this.transactionHandler = new TransactionHandler(accountService, validation, scanner);
         this.searchHandler = new SearchHandler(accountService, scanner);
-        this.validation = new ValidatorHandler(accountService);
 
     }
     

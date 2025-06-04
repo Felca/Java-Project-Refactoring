@@ -1,7 +1,7 @@
 package solutions.model;
 
 public class Money {
-    private final int amount;
+    private int amount;
 
     public Money(int amount) {
         if (amount < 0) {

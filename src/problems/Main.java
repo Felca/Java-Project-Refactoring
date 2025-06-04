@@ -6,29 +6,75 @@ import java.util.Scanner;
 
 /*
  * smell code : large class
- * reason: "Main" class is too long and contains more than 1 responsibility, therefore
- * 			SOLID rule is not applied
- * solution: extract method
+ * reason: Class Main mencakupi semua class yang ada sehingga terlalu panjang dan memiliki lebih dari satu tanggung jawab
+ * solution: Extract class
+ * 
+ * smell code : long method
+ * reason: Method yang memiliki code yang terlalu banyak dan panjang.
+ * solution: Extract method
  * 
  * smell code : comments
- * reason: there is a comment that the developer forgets to delete, in "BankingApplication"
- * solution: delete comment
- * 
- * Smell code : Long method
- * Reason : developer menaruh method dengan memiliki code yang terlalu banyak dan panjang 
- * Solution : extract method
- * 
- * Smell code : primitive obsession
- * reason : code mengandung banyak tipe data primitif (int, String, bool)
- * solution : 
+ * reason: Terdapat comment yang lupa di delete oleh developer di BankingApplication pada method isPossibleWithdraw().
+ * solution: Delete comment
  * 
  * smell code : duplicate code
- * reason : banyak terjadi pengulangan code
- * solution : extract method
+ * reason: Terdapat beberapa duplicate code dalam beberapa bagian
+ * solution: Delete code
  * 
+ * smell code : switch statement
+ * reason: Switch Statement yang sangat panjang dan kompleks
+ * solution: Extract method/Make method
  * 
+ * smell code : temporary field
+ * reason: Suatu variabel dalam class hanya digunakan dalam beberapa situasi tertentu, hal ini merugikan dikarenakan memakan memory, dan membingungkan karena memiliki nilai yang tidak valid (Terdapat pada deleteAccount())
+ * solution: Delete field
  * 
+ * smell code : divergent change
+ * reason: Class BankingApplication memiliki sangat banyak kode dan method dalam satu class
+ * solution: Extract class
+ * 
+ * smell code : shotgun surgery
+ * reason: Penggunaan account.number dan account.balance merupakan pengulangan logic yang sama yang digunakan di berbagai method. Apabila terjadi perubahan, maka harus mengubah juga account.number dan account.balance yang di method lain.
+ * solution: Move method/Encapsulation
+ * 
+ * smell code : dead code
+ * reason: Terdapat dead code di code original, yaitu di bagian method isPossibleWithdraw(), karena terdapat variabel “possibleWithdraw” yang sebenarnya tidak ada gunanya
+ * solution: Delete dead code
+ * 
+ * smell code : speculative generality
+ * reason: Pada bagian abstract class Account, code tersebut dibuat tetapi tidak beroperasi dengan baik, karena diasumsikan bahwa penggunaannya akan ada perbedaan untuk subclassnya, dimana implementasi code dari subclass Account menggunakan implementasi yang sama.
+ * solution: Delete not-yet-used variables/methods/classes
+ * 
+ * smell code : feature envy
+ * reason: Class BankingApplication sering mengakses data dari class Account seperti yang dapat kita lihat pada method isPossibleWithdraw() yang mengakses field account.number dan account.balance secara langsung
+ * solution: Move method
+ * 
+ * smell code : inappropriate intimacy
+ * reason: Terdapat di method isPossibleWithdraw() di baris if(account.number == accountNumber) int remainingBalance = account.balance - amount. Itu dikarenakan class BankingApplication bisa mengakses secara langsung ke class Account dan mengetahui terlalu banyak apa yang di dalam class Account.
+ * solution: Encapsulation of fields
+ * 
+ * smell code : middle man
+ * reason: Method depositAmount() dimana kelas dimana depositAccount() berada, yaitu BankingApplication, hanya membantu “mencarikan” akun yang dicari dan serahkan data yang ditemukannya/tugasnya ke account.updateBalance() yang ada di class Account.
+ * solution: Removing middle man
+ * 
+ * smell code : multifaceted abstraction
+ * reason: Class Main menanggung sangat banyak responsibility karena mengandung banyak class (inner class)
+ * solution: Extract class
+ * 
+ * smell code : deficient encapsulation
+ * reason: Hampir semua variabel/field tidak mempunyai identifier, dan karena itu, class yang berbeda bisa mengakses ke kelas lain secara langsung, contohnya account.number di beberapa method yang mengakses dari class lain seperti BankingApplication ke class Account.
+ * solution: Give private identifiers untuk fields
+ * 
+ * smell code : insufficient modularization
+ * reason: Class Main dan BankingApplication yang menampung sangat banyak code yang tidak dipisah ke modul lainnya.
+ * solution: Extract modules
+ * 
+ * smell code : wide hierarchy
+ * reason: SavingsAccount, SalaryAccount, dan CurrentAccount mempunyai behavior yang sama persis dengan satu sama lain dan tidak menambahkan behavior yang baru ataupun field yang unik dari subclass tersebut.
+ * solution: Using enum and deleting unnecessary subclasses
  */
+
+
 
 public class Main {
     private static final int minBalanceToOpen = 1000;
