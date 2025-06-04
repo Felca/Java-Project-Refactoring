@@ -1,6 +1,8 @@
-package solutions;
+package solutions.handler;
 
 import java.util.Scanner;
+
+import solutions.service.AccountService;
 
 public class DeleteAccountHandler {
 	private final AccountService accountService;

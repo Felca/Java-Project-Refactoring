@@ -1,7 +1,10 @@
-package solutions;
+package solutions.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import solutions.model.Account;
+import solutions.model.Money;
 
 public class AccountService {
     private List<Account> accounts = new ArrayList<>();
@@ -20,26 +23,31 @@ public class AccountService {
         return true;
     }
 
-    public boolean createAccount(int type, String name, int number, String date, int balance) {
-        Account account = null;
+    public boolean createAccount(int type, String name, int number, String date, int balanceAmount) {
+        Account.AccountType accountType;
+
         switch (type) {
             case 1:
-                account = new Account(Account.AccountType.SALARY, name, number, date, balance);
+                accountType = Account.AccountType.SALARY;
                 break;
             case 2:
-                account = new Account(Account.AccountType.SAVING, name, number, date, balance);
+                accountType = Account.AccountType.SAVING;
                 break;
             case 3:
-                account = new Account(Account.AccountType.CURRENT, name, number, date, balance);
+                accountType = Account.AccountType.CURRENT;
                 break;
             default:
                 System.out.println("Invalid choice!");
                 return false;
         }
+        
+        Money balance = new Money(balanceAmount);
 
+        Account account = new Account(accountType, name, number, date, balance);
         accounts.add(account);
         return true;
     }
+
 
     public void displayAllAccounts() {
         for (Account account : accounts) {
@@ -63,15 +71,6 @@ public class AccountService {
 
     public void depositAmount(Account acc, int amount) {
         acc.updateBalance(amount);
-        System.out.println("Amount deposited successfully!");
-    }
-    
-    public boolean isPossibleWithdraw(Account acc, int amount, int minBalance) {
-    	int remainingBalance = acc.getBalance() - amount;
-    	if(remainingBalance >= minBalance) {
-    		return true;
-    	}
-    	else return false;
     }
 
     public void withdrawAmount(Account acc, int amount) {

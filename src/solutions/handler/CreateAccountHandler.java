@@ -1,6 +1,8 @@
-package solutions;
+package solutions.handler;
 
 import java.util.Scanner;
+
+import solutions.service.AccountService;
 
 public class CreateAccountHandler {
 	private AccountService accountService;
@@ -40,7 +42,7 @@ public class CreateAccountHandler {
             System.out.print("Enter account balance: ");
             balance = scanner.nextInt();
         } while (!validation.accountBalanceAccepted(balance));
-        
+                
         accountService.createAccount(type, name, number, creationDate, balance);
     }
 }

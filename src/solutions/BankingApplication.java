@@ -2,6 +2,9 @@ package solutions;
 
 import java.util.Scanner;
 
+import solutions.handler.*;
+import solutions.service.AccountService;
+
 public class BankingApplication {
 	private AccountService accountService;
     private Scanner scanner;

@@ -1,6 +1,10 @@
-package solutions;
+package solutions.handler;
 
 import java.util.List;
+
+import solutions.model.Account;
+import solutions.model.Money;
+import solutions.service.AccountService;
 
 public class ValidatorHandler {
 	private static final int MIN_BALANCE_TO_OPEN = 1000;
@@ -24,14 +28,22 @@ public class ValidatorHandler {
         return true;
     }
 
+    
     public boolean isPossibleWithdraw(Account acc, int amount) {
-        int remainingBalance = acc.getBalance() - amount;
-        if(remainingBalance >= MIN_BALANCE_REMAIN_AFTER_WITHDRAW) {
-        	return true;
-        }
-        else {
-        	System.out.println("Cannot withdraw. Minimum balance requirement not met.");
-        	return false;
+        Money currentBalance = acc.getBalance();
+        Money withdrawAmount = new Money(amount);
+
+        try {
+            Money remainingBalance = currentBalance.subtract(withdrawAmount);
+            if (remainingBalance.getAmount() >= MIN_BALANCE_REMAIN_AFTER_WITHDRAW) {
+                return true;
+            } else {
+                System.out.println("Cannot withdraw. Minimum balance requirement not met.");
+                return false;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Cannot withdraw: " + e.getMessage());
+            return false;
         }
     }
     

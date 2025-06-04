@@ -1,14 +1,16 @@
-package solutions;
+package solutions.model;
 
 public class Account {
-    enum AccountType { CURRENT, SALARY, SAVING }
+	public enum AccountType {
+        CURRENT, SALARY, SAVING
+    }
     private AccountType type;
     private String name;
     private String creationDate;
     private int number;
-    private int balance;
+    private Money balance;
     
-    public Account(AccountType type, String name, int number, String creationDate, int balance) {
+    public Account(AccountType type, String name, int number, String creationDate, Money balance) {
         this.type = type;
         this.name = name;
         this.number = number;
@@ -32,12 +34,17 @@ public class Account {
         return creationDate;
     }
     
-    public int getBalance() {
+    public Money getBalance() {
         return balance;
     }
     
     public void updateBalance(int amount) {
-        this.balance += amount;
+        if (amount >= 0) {
+            balance = balance.add(new Money(amount));
+        } 
+        else {
+            balance = balance.subtract(new Money(-amount));
+        }
     }
     
     public void display() {

@@ -1,6 +1,9 @@
-package solutions;
+package solutions.handler;
 
 import java.util.Scanner;
+
+import solutions.model.Account;
+import solutions.service.AccountService;
 
 public class TransactionHandler {
 	private AccountService accountService;
@@ -22,7 +25,7 @@ public class TransactionHandler {
         System.out.print("Enter deposit amount: ");
         int amount = scanner.nextInt();
         accountService.depositAmount(acc, amount);
-        System.out.println("Deposit successful!");
+        System.out.println("Amount deposited successfully!");
     }
 
     public void handleWithdraw() {

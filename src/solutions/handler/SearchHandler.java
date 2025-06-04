@@ -1,6 +1,9 @@
-package solutions;
+package solutions.handler;
 
 import java.util.Scanner;
+
+import solutions.model.Account;
+import solutions.service.AccountService;
 
 public class SearchHandler {
 	private final AccountService accountService;
